@@ -2,6 +2,6 @@
 # data is a json file
 # year is a string
 # returns a list of strings (hosts)
-def extract(data, year):
+def extract(data):
     # Code goes here
     return

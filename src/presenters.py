@@ -2,6 +2,6 @@
 # data is a json file
 # year is a string
 # returns dictionary mapping string (award) to list of strings (presenters)
-def extract(data, year):
+def extract(data):
     # Code goes here
     return
