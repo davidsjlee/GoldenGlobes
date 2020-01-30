@@ -1,5 +1,8 @@
 '''Version 0.35'''
 
+from util.load import load_json, dump_json
+from src import awards, hosts, nominees, presenters, winners
+
 OFFICIAL_AWARDS_1315 = [
     'cecil b. demille award',
     'best motion picture - drama',
@@ -56,13 +59,13 @@ def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
     # Your code here
-    hosts = []
+    hosts = load_json('results/', year)['hosts']
     return hosts
 
 def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
-    awards = []
+    awards = load_json('results/', year)['award_names']
     return awards
 
 def get_nominees(year):
@@ -70,7 +73,9 @@ def get_nominees(year):
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
     # Your code here
-    nominees = dict()
+    award_map = load_json('results/', year)['award_data']
+    awards = award_map.keys()
+    nominees = {award : award_map[award]['nominees'] for award in awards}
     return nominees
 
 def get_winner(year):
@@ -78,7 +83,9 @@ def get_winner(year):
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
-    winners = dict()
+    award_map = load_json('results/', year)['award_data']
+    awards = award_map.keys()
+    winners = {award : award_map[award]['winner'] for award in awards}
     return winners
 
 def get_presenters(year):
@@ -86,7 +93,9 @@ def get_presenters(year):
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
     # Your code here
-    presenters = dict()
+    award_map = load_json('results/', year)['award_data']
+    awards = award_map.keys()
+    presenters = {award : award_map[award]['presenters'] for award in awards}
     return presenters
 
 def pre_ceremony():
@@ -95,6 +104,7 @@ def pre_ceremony():
     plain text file. It is the first thing the TA will run when grading.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
+
     print("Pre-ceremony processing complete.")
     return
 
@@ -105,6 +115,58 @@ def main():
     run when grading. Do NOT change the name of this function or
     what it returns.'''
     # Your code here
+    # you wanna make it so that it cycles through each file in data/
+    years = ['2013']
+    for year in years:
+        data = load_json('data/', year)
+        to_dump = {}
+
+        host_names = hosts.extract(data)
+        to_dump['hosts'] = host_names
+        award_names = awards.extract(data)
+        to_dump['award_names'] = award_names
+
+        nomi_map = nominees.extract(data)
+        pres_map = presenters.extract(data)
+        winn_map = winners.extract(data)
+
+        award_map = {}
+
+        true_award_list = OFFICIAL_AWARDS_1315
+        if year == '2018' or year == '2019':
+            true_award_list = OFFICIAL_AWARDS_1819
+
+        for award in true_award_list:
+                award_map[award] = {}
+                noms = []
+                pres = []
+                winn = ''
+
+                try:
+                    noms = nomi_map[award]
+                except KeyError:
+                    print("couldn't find nominees")
+
+                try:
+                    pres = pres_map[award]
+                except KeyError:
+                    print("couldn't find presenters")
+
+                try:
+                    winn = winn_map[award]
+                except KeyError:
+                    print("couldn't find winner")
+
+                award_map[award]['nominees'] = noms
+                award_map[award]['presenters'] = pres
+                award_map[award]['winner'] = winn
+
+        to_dump['award_data'] = award_map
+
+        # for testing
+        dump_json('results/', year, to_dump)
+
+    print("Done.")
     return
 
 if __name__ == '__main__':

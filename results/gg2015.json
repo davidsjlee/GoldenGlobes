@@ -1,0 +1,144 @@
+{
+    "hosts": [
+        "host1",
+        "host2",
+        "host3"
+    ],
+    "award_names": [
+        "award1",
+        "award2",
+        "award3"
+    ],
+    "award_data": {
+        "cecil b. demille award": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best motion picture - drama": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actress in a motion picture - drama": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actor in a motion picture - drama": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best motion picture - comedy or musical": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actress in a motion picture - comedy or musical": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actor in a motion picture - comedy or musical": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best animated feature film": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best foreign language film": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actress in a supporting role in a motion picture": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actor in a supporting role in a motion picture": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best director - motion picture": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best screenplay - motion picture": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best original score - motion picture": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best original song - motion picture": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best television series - drama": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actress in a television series - drama": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actor in a television series - drama": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best television series - comedy or musical": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actress in a television series - comedy or musical": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actor in a television series - comedy or musical": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best mini-series or motion picture made for television": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actress in a mini-series or motion picture made for television": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actor in a mini-series or motion picture made for television": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actress in a supporting role in a series, mini-series or motion picture made for television": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        },
+        "best performance by an actor in a supporting role in a series, mini-series or motion picture made for television": {
+            "nominees": [],
+            "presenters": [],
+            "winner": ""
+        }
+    }
+}
