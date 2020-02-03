@@ -1,7 +1,9 @@
 '''Version 0.35'''
 
-from util.load import load_json, dump_json
+from time import perf_counter
+
 from src import awards, hosts, nominees, presenters, winners
+from util.load import load_json, dump_json
 
 OFFICIAL_AWARDS_1315 = [
     'cecil b. demille award',
@@ -11,11 +13,14 @@ OFFICIAL_AWARDS_1315 = [
      'best motion picture - comedy or musical',
      'best performance by an actress in a motion picture - comedy or musical',
      'best performance by an actor in a motion picture - comedy or musical',
-     'best animated feature film', 'best foreign language film',
+     'best animated feature film',
+     'best foreign language film',
      'best performance by an actress in a supporting role in a motion picture',
      'best performance by an actor in a supporting role in a motion picture',
-     'best director - motion picture', 'best screenplay - motion picture',
-     'best original score - motion picture', 'best original song - motion picture',
+     'best director - motion picture',
+     'best screenplay - motion picture',
+     'best original score - motion picture',
+     'best original song - motion picture',
      'best television series - drama',
      'best performance by an actress in a television series - drama',
      'best performance by an actor in a television series - drama',
@@ -115,20 +120,35 @@ def main():
     run when grading. Do NOT change the name of this function or
     what it returns.'''
     # Your code here
-    # you wanna make it so that it cycles through each file in data/
+
     years = ['2013']
+
     for year in years:
         data = load_json('data/', year)
         to_dump = {}
 
+        # EXTRACT & TIME
+        t0 = perf_counter()
         host_names = hosts.extract(data)
+        t1 = perf_counter()
         to_dump['hosts'] = host_names
         award_names = awards.extract(data)
+        t2 = perf_counter()
         to_dump['award_names'] = award_names
-
         nomi_map = nominees.extract(data)
+        t3 = perf_counter()
         pres_map = presenters.extract(data)
+        t4 = perf_counter()
         winn_map = winners.extract(data)
+        tf = perf_counter()
+
+        # DISPLAY TIMES
+        print("Host names extracted in : ", round(t1 - t0, 2), " seconds.")
+        print("Award names extracted in : ", round(t2 - t1, 2), " seconds.")
+        print("Nominees extracted in : ", round(t3 - t2, 2), " seconds.")
+        print("Presenters extracted in : ", round(t4 - t3, 2), " seconds.")
+        print("Winners extracted in : ", round(tf - t4, 2), " seconds.")
+        print("Cumulative time to perform all tasks : ", round(tf - t0, 2), " seconds.")
 
         award_map = {}
 
@@ -145,17 +165,17 @@ def main():
                 try:
                     noms = nomi_map[award]
                 except KeyError:
-                    print("couldn't find nominees")
+                    pass
 
                 try:
                     pres = pres_map[award]
                 except KeyError:
-                    print("couldn't find presenters")
+                    pass
 
                 try:
                     winn = winn_map[award]
                 except KeyError:
-                    print("couldn't find winner")
+                    pass
 
                 award_map[award]['nominees'] = noms
                 award_map[award]['presenters'] = pres
