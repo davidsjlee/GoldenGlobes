@@ -43,10 +43,14 @@ OFFICIAL_AWARDS_1819 = [
     'best performance by an actor in a motion picture - musical or comedy',
     'best performance by an actress in a supporting role in any motion picture',
     'best performance by an actor in a supporting role in any motion picture',
-    'best director - motion picture', 'best screenplay - motion picture',
-    'best motion picture - animated', 'best motion picture - foreign language',
-    'best original score - motion picture', 'best original song - motion picture',
-    'best television series - drama', 'best television series - musical or comedy',
+    'best director - motion picture',
+    'best screenplay - motion picture',
+    'best motion picture - animated',
+    'best motion picture - foreign language',
+    'best original score - motion picture',
+    'best original song - motion picture',
+    'best television series - drama',
+    'best television series - musical or comedy',
     'best television limited series or motion picture made for television',
     'best performance by an actress in a limited series or a motion picture made for television',
     'best performance by an actor in a limited series or a motion picture made for television',
@@ -121,9 +125,11 @@ def main():
     what it returns.'''
     # Your code here
 
+    # add which years you want to run the program for in here as a string
     years = ['2013']
 
     for year in years:
+        ts = perf_counter()
         data = load_json('data/', year)
         to_dump = {}
 
@@ -149,6 +155,7 @@ def main():
         print("Presenters extracted in : ", round(t4 - t3, 2), " seconds.")
         print("Winners extracted in : ", round(tf - t4, 2), " seconds.")
         print("Cumulative time to perform all tasks : ", round(tf - t0, 2), " seconds.")
+        print("Cumulative time to load data and perform all tasks : ", round(tf - ts, 2), " seconds.")
 
         award_map = {}
 
