@@ -1,5 +1,6 @@
 '''Version 0.35'''
 
+from string import capwords
 from time import perf_counter
 
 from src import awards, hosts, nominees, presenters, winners
@@ -149,13 +150,13 @@ def main():
         tf = perf_counter()
 
         # DISPLAY TIMES
-        print("Host names extracted in : ", round(t1 - t0, 2), " seconds.")
-        print("Award names extracted in : ", round(t2 - t1, 2), " seconds.")
-        print("Nominees extracted in : ", round(t3 - t2, 2), " seconds.")
-        print("Presenters extracted in : ", round(t4 - t3, 2), " seconds.")
-        print("Winners extracted in : ", round(tf - t4, 2), " seconds.")
-        print("Cumulative time to perform all tasks : ", round(tf - t0, 2), " seconds.")
-        print("Cumulative time to load data and perform all tasks : ", round(tf - ts, 2), " seconds.")
+        print("Host names extracted in: ", round(t1 - t0, 2), " seconds.")
+        print("Award names extracted in: ", round(t2 - t1, 2), " seconds.")
+        print("Nominees extracted in: ", round(t3 - t2, 2), " seconds.")
+        print("Presenters extracted in: ", round(t4 - t3, 2), " seconds.")
+        print("Winners extracted in: ", round(tf - t4, 2), " seconds.")
+        print("Cumulative time to perform all tasks: ", round(tf - t0, 2), " seconds.")
+        print("Cumulative time to load data and perform all tasks: ", round(tf - ts, 2), " seconds.")
 
         award_map = {}
 
@@ -173,12 +174,10 @@ def main():
                     noms = nomi_map[award]
                 except KeyError:
                     pass
-
                 try:
                     pres = pres_map[award]
                 except KeyError:
                     pass
-
                 try:
                     winn = winn_map[award]
                 except KeyError:
@@ -189,11 +188,32 @@ def main():
                 award_map[award]['winner'] = winn
 
         to_dump['award_data'] = award_map
-
-        # for testing
         dump_json('results/', year, to_dump)
 
-    print("Done.")
+        # # HUMAN-READABLE FORMAT
+        # # HOSTS
+        # print("Host(s): ", end='')
+        # for h in to_dump['hosts']:
+        #     print(capwords(h), end=', ')
+        # print()
+        # print()
+        #
+        # # AWARDS (?)
+        #
+        # # PRESENTERS, NOMINEES, and WINNERS
+        # for ad, map in to_dump['award_data'].items():
+        #     print("Award: ", capwords(ad))
+        #     print("Nominee(s): ", end='')
+        #     for n in map['nominees']:
+        #         print(capwords(n), end=', ')
+        #     print()
+        #     print("Presenter(s): ", end='')
+        #     for p in map['presenters']:
+        #         print(capwords(p), end=', ')
+        #     print()
+        #     print("Winner: ", capwords(map['winner']))
+        #     print()
+
     return
 
 if __name__ == '__main__':
