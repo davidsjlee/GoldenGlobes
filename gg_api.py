@@ -1,9 +1,17 @@
 '''Version 0.35'''
 
-from time import perf_counter
+#from time import perf_counter
 
 from src import awards, hosts, nominees, presenters, winners
-from util.load import load_json, dump_json
+from util.load import load_json, dump_json, read_data_from_file
+import os
+import nltk
+from nltk.corpus import stopwords
+#import re
+import json
+import requests
+from bs4 import BeautifulSoup
+import util.config
 
 OFFICIAL_AWARDS_1315 = [
     'cecil b. demille award',
@@ -107,13 +115,98 @@ def get_presenters(year):
     presenters = {award : award_map[award]['presenters'] for award in awards}
     return presenters
 
+def clean_tweet(tweet, stopwords):
+    #words = word_tokenize(tweet)
+    words = tweet.split()
+    cleantweet = ''
+    #first = True
+    for word in words:
+        if word in stopwords:
+            continue
+        #if not first:
+        #    cleantweet += ' '
+        #else:
+        #    first = False
+        cleantweet += ' ' + word
+    return cleantweet
+
 def pre_ceremony():
     '''This function loads/fetches/processes any data your program
     will use, and stores that data in your DB or in a json, csv, or
     plain text file. It is the first thing the TA will run when grading.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
-
+    stopwords = nltk.corpus.stopwords.words('english')
+    stopwords.extend(['#goldenglobes', '#GoldenGlobes', '#Goldenglobes', '#gg'])
+    years = [2013]
+    for y in years:
+        #remove stopwords from tweets and store in data/clean20*.json
+        cleanfilename = 'data/' + 'clean'+ str(y) + '.json'
+        if not os.path.isfile(cleanfilename):
+            print("getting tweet data for %d" % y)
+            clean_tweets = []
+            raw_tweets = read_data_from_file('data/', y, 'raw')
+            for t in raw_tweets:
+                clean_tweets.append(clean_tweet(t['text'], stopwords))
+            with open(cleanfilename, 'w') as f:
+                json.dump(clean_tweets, f)
+        #scrape movies/cast/directors for the year from wikipedia and store in data/clean20*.json
+        moviefilename = 'data/' + 'movie'+ str(y) + '.json'
+        peoplefilename = 'data/' + 'people'+ str(y) + '.json'
+        if not os.path.isfile(moviefilename):
+            print("getting movie data for %d" % y)
+            page = requests.get("https://en.wikipedia.org/wiki/List_of_American_films_of_%d" % (int(y) - 1))
+            soup = BeautifulSoup(page.content, 'html.parser')
+            body = list((list(soup.children)[2]).children)[3]
+            t = soup.find_all('table', class_="wikitable sortable")[0]
+            rows = t.findChildren("tr")
+            movie_titles = []
+            people_names = []
+            firstRow = True
+            i = 0
+            for row in rows:
+                #print row
+                i += 1
+                if firstRow:
+                    firstRow = False
+                else:
+                    cells = row.findChildren("td")
+                    link = cells[0].findChildren("a")
+                    title = link[0].contents[0]
+                    #TODO handle special tags
+                    if  i != 200:
+                        movie_titles.append(title)
+                    else:
+                        print(title)
+                    directorLinks = cells[1].findChildren("a")
+                    if not directorLinks:
+                        people_names.append(cells[1].contents[0])
+                    else:
+                       for dl in directorLinks:
+                           people_names.append(dl.contents[0])
+                    castlinks = cells[2].findChildren("a")
+                    for cl in castlinks:
+                        people_names.append(cl.contents[0])
+            with open(moviefilename, 'w') as f:
+                json.dump(movie_titles, f)
+            with open(peoplefilename, 'w') as f:
+                json.dump(people_names, f)
+        allpeoplefilename = 'data/' + 'allpeople'+ str(y) + '.json'
+        if not os.path.isfile(allpeoplefilename):
+            allpeople = []
+            print("getting movie data for %d" % y)
+            page = requests.get("https://en.wikipedia.org/wiki/List_of_American_film_actresses")
+            soup = BeautifulSoup(page.content, 'html.parser')
+            uls = soup.find_all('ul')
+            #print uls
+            for ul in uls:
+                lis = ul.findChildren('li')
+                for li in lis:
+                    if ' born ' in list(li.children):
+                        link =li.findChild('a')
+                        allpeople.append(link.text)
+                with open(allpeoplefilename, 'w') as f:
+                    json.dump(allpeople, f)
     print("Pre-ceremony processing complete.")
     return
 
@@ -128,6 +221,16 @@ def main():
     # add which years you want to run the program for in here as a string
     years = ['2013']
 
+    util.config.official_award_list = OFFICIAL_AWARDS_1315
+    for year in years:
+        util.config.current_year = year
+        data = load_json('data/', year)
+        winn_map = winners.extract(data)
+        print(winn_map)
+        #pres_map = presenters.extract(data)
+        #print pres_map
+
+    '''
     for year in years:
         ts = perf_counter()
         data = load_json('data/', year)
@@ -194,7 +297,10 @@ def main():
         dump_json('results/', year, to_dump)
 
     print("Done.")
+    '''
+
     return
 
 if __name__ == '__main__':
+    pre_ceremony()
     main()
