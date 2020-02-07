@@ -3,4 +3,4 @@
 # returns dictionary mapping string (award) to list of strings (presenters)
 def extract(data):
     # Code goes here
-    return
+    return {}

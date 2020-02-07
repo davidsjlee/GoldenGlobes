@@ -3,4 +3,4 @@
 # returns a dictionary mapping string (award) to string (winner)
 def extract(data):
     # Code goes here
-    return
+    return {}
