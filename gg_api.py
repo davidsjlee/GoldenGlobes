@@ -1,5 +1,5 @@
 '''Version 0.35'''
-
+import sys
 #from time import perf_counter
 from string import capwords
 from time import perf_counter
@@ -136,10 +136,15 @@ def pre_ceremony():
     will use, and stores that data in your DB or in a json, csv, or
     plain text file. It is the first thing the TA will run when grading.
     Do NOT change the name of this function or what it returns.'''
-    # Your code here
+    # Your code here 
+    if len(sys.argv) != 2:
+        print ("Usage: %s <four-digit-year>" % sys.argv[0])
+        sys.exit()
+    else:
+        years = [int(sys.argv[1])]
     stopwords = nltk.corpus.stopwords.words('english')
     stopwords.extend(['#goldenglobes', '#GoldenGlobes', '#Goldenglobes', '#gg'])
-    years = [2013]
+    #years = [2013,2015]
     for y in years:
         #remove stopwords from tweets and store in data/clean20*.json
         cleanfilename = 'data/' + 'clean'+ str(y) + '.json'
@@ -159,39 +164,56 @@ def pre_ceremony():
             page = requests.get("https://en.wikipedia.org/wiki/List_of_American_films_of_%d" % (int(y) - 1))
             soup = BeautifulSoup(page.content, 'html.parser')
             body = list((list(soup.children)[2]).children)[3]
-            t = soup.find_all('table', class_="wikitable sortable")[0]
-            rows = t.findChildren("tr")
+            tables = soup.find_all('table', class_="wikitable sortable")
             movie_titles = []
             people_names = []
-            firstRow = True
-            i = 0
-            for row in rows:
-                #print row
-                i += 1
-                if firstRow:
-                    firstRow = False
-                else:
-                    cells = row.findChildren("td")
-                    link = cells[0].findChildren("a")
-                    title = link[0].contents[0]
-                    #TODO handle special tags
-                    if  i != 200:
-                        movie_titles.append(title)
+            for t in tables:
+                rows = t.findChildren("tr")
+                firstRow = True
+                i = 0
+                for row in rows:
+                    #print row
+                    i += 1
+                    if firstRow:
+                        firstRow = False
                     else:
-                        print(title)
-                    directorLinks = cells[1].findChildren("a")
-                    if not directorLinks:
-                        people_names.append(cells[1].contents[0])
-                    else:
-                       for dl in directorLinks:
-                           people_names.append(dl.contents[0])
-                    castlinks = cells[2].findChildren("a")
-                    for cl in castlinks:
-                        people_names.append(cl.contents[0])
-            with open(moviefilename, 'w') as f:
-                json.dump(movie_titles, f)
-            with open(peoplefilename, 'w') as f:
-                json.dump(people_names, f)
+                        cells = row.findChildren("td")
+                        link = cells[0].findChildren("a")
+                        if link != []:
+                            directorCell = cells[1]
+                            castCell = cells[2]
+                        else:
+                            link = cells[1].findChildren("a")
+                            if link != []:
+                                directorCell = cells[2]
+                                castCell = cells[3]
+                            else:
+                                link = cells[2].findChildren("a")
+                                if link != []:
+                                    directorCell = cells[3]
+                                    castCell = cells[4]
+                        title = link[0].contents[0]
+                        #TODO handle special tags
+                        if  i != 200:
+                            movie_titles.append(title)
+                        else:
+                            print(title)
+                        directorLinks = directorCell.findChildren("a")
+                        if not directorLinks:
+                            people_names.append(directorCell.contents[0])
+                        else:
+                           for dl in directorLinks:
+                               people_names.append(dl.contents[0])
+                        castlinks = castCell.findChildren("a")
+                        for cl in castlinks:
+                            people_names.append(cl.contents[0])
+                            
+                            
+                with open(moviefilename, 'w') as f:
+                    json.dump(movie_titles, f)
+                with open(peoplefilename, 'w') as f:
+                    json.dump(people_names, f)
+                
         allpeoplefilename = 'data/' + 'allpeople'+ str(y) + '.json'
         if not os.path.isfile(allpeoplefilename):
             allpeople = []
@@ -219,8 +241,13 @@ def main():
     what it returns.'''
     # Your code here
 
+    if len(sys.argv) != 2:
+        print ("Usage: %s <four-digit-year>" % sys.argv[0])
+        sys.exit()
+    else:
+        years = [sys.argv[1]]
     # add which years you want to run the program for in here as a string
-    years = ['2013']
+    #years = ['2013', '2015']
 
     util.config.official_award_list = OFFICIAL_AWARDS_1315
     for year in years:
@@ -320,3 +347,4 @@ def main():
 if __name__ == '__main__':
     pre_ceremony()
     main()
+
