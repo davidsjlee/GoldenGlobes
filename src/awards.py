@@ -1,4 +1,6 @@
 import string
+from nltk import RegexpParser, pos_tag
+from nltk.tokenize import word_tokenize
 
 # function for extracting award names from twitter data
 # data is a json file
@@ -6,8 +8,6 @@ import string
 def extract(data):
     # Code goes here
     raw_awards = {}
-
-    # REDO APPROACH GIVEN CONSTRAINTS
 
     stop_words = ['drama', 'musical', 'television', 'film', 'picture']
 
