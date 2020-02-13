@@ -264,7 +264,11 @@ def main():
 
         # EXTRACT & TIME
         t0 = perf_counter()
-        host_names = hosts.extract(data)
+        if year == '2013' or '2014' or '2015' or '2019':
+            host_names = hosts.extract(data)
+        else:
+            host_names = host_single.extract(data)
+        #host_names = hosts.extract(data)
         t1 = perf_counter()
         to_dump['hosts'] = host_names
         award_names = awards.extract(data)
