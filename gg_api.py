@@ -136,7 +136,7 @@ def pre_ceremony():
     will use, and stores that data in your DB or in a json, csv, or
     plain text file. It is the first thing the TA will run when grading.
     Do NOT change the name of this function or what it returns.'''
-    # Your code here 
+    # Your code here
     if len(sys.argv) != 2:
         print ("Usage: %s <four-digit-year>" % sys.argv[0])
         sys.exit()
@@ -207,13 +207,13 @@ def pre_ceremony():
                         castlinks = castCell.findChildren("a")
                         for cl in castlinks:
                             people_names.append(cl.contents[0])
-                            
-                            
+
+
                 with open(moviefilename, 'w') as f:
                     json.dump(movie_titles, f)
                 with open(peoplefilename, 'w') as f:
                     json.dump(people_names, f)
-                
+
         allpeoplefilename = 'data/' + 'allpeople'+ str(y) + '.json'
         if not os.path.isfile(allpeoplefilename):
             allpeople = []
@@ -318,33 +318,32 @@ def main():
         to_dump['award_data'] = award_map
         dump_json('results/', year, to_dump)
 
-        # # HUMAN-READABLE FORMAT
-        # # HOSTS
-        # print("Host(s): ", end='')
-        # for h in to_dump['hosts']:
-        #     print(capwords(h), end=', ')
-        # print()
-        # print()
-        #
-        # # AWARDS (?)
-        #
-        # # PRESENTERS, NOMINEES, and WINNERS
-        # for ad, map in to_dump['award_data'].items():
-        #     print("Award: ", capwords(ad))
-        #     print("Nominee(s): ", end='')
-        #     for n in map['nominees']:
-        #         print(capwords(n), end=', ')
-        #     print()
-        #     print("Presenter(s): ", end='')
-        #     for p in map['presenters']:
-        #         print(capwords(p), end=', ')
-        #     print()
-        #     print("Winner: ", capwords(map['winner']))
-        #     print()
+        # HUMAN-READABLE FORMAT
+        # HOSTS
+        print("Host(s): ", end='')
+        for h in to_dump['hosts']:
+            print(capwords(h), end=', ')
+        print()
+        print()
+
+        # AWARDS (?)
+
+        # PRESENTERS, NOMINEES, and WINNERS
+        for ad, map in to_dump['award_data'].items():
+            print("Award: ", capwords(ad))
+            print("Nominee(s): ", end='')
+            for n in map['nominees']:
+                print(capwords(n), end=', ')
+            print()
+            print("Presenter(s): ", end='')
+            for p in map['presenters']:
+                print(capwords(p), end=', ')
+            print()
+            print("Winner: ", capwords(map['winner']))
+            print()
 
     return
 
 if __name__ == '__main__':
     pre_ceremony()
     main()
-
