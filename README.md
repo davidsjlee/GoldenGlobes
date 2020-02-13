@@ -2,10 +2,13 @@
 
 CS 337: Project 1 </br>
 Group members: David Lee and Emily Nee (Adviti Atluri was originally in our group, but dropped the course) </br>
+Github repo: 
 
 Set up:</br> 
 pip install -r requirements.txt</br> 
 </br>
+Place:</br>
+twitter data as a json file of the format ggYYYY.json into data folder </br>
 Run:</br>
 python gg_api.py YYYY (where YYYY is the desired year - e.g. 2013) </br>
 python autograder.py YYYY </br> 
