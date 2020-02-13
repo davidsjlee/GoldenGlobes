@@ -2,7 +2,7 @@
 
 CS 337: Project 1 </br>
 Group members: David Lee and Emily Nee (Adviti Atluri was originally in our group, but dropped the course) </br>
-Github repo: </br>
+Github repo: https://github.com/davidsjlee/GoldenGlobes</br>
 </br>
 Set up:</br> 
 pip install -r requirements.txt</br> 
