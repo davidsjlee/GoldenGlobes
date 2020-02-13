@@ -12,6 +12,6 @@ python autograder.py YYYY </br>
 
 </br>
 References:</br>
-1. https://github.com/kapil1garg/eecs337-team3-project1
-2. https://github.com/olivergoodman/goldenglobes
-3. https://github.com/estettin/EECS337_Project1
+1. https://github.com/kapil1garg/eecs337-team3-project1 </br> 
+2. https://github.com/olivergoodman/goldenglobes </br> 
+3. https://github.com/estettin/EECS337_Project1 </br> 
